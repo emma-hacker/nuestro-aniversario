@@ -485,13 +485,21 @@ document.getElementById('btnDescargar').addEventListener('click', async () => {
     contenedor.style.cssText = estilosPrevios;
 
     // Descargar la imagen
-    const link = document.createElement('a');
-    const fecha = new Date().toISOString().slice(0, 10);
-    link.download = `Para-Amorchiii-${fecha}.png`;
-    link.href = dataUrl;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+        const esCelular = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    if (esCelular) {
+      const ventana = window.open();
+      ventana.document.write(`<body style="margin:0; background:#000; display:flex; flex-direction:column; justify-content:center; align-items:center; height:100vh;"><img src="${dataUrl}" style="max-width:100%; max-height:90%; object-fit:contain;" /><p style="color:white; font-family:sans-serif; margin-top: 15px;">Mantén presionada la imagen para guardarla 📸</p></body>`);
+      ventana.document.close();
+    } else {
+      const link = document.createElement('a');
+      const fecha = new Date().toISOString().slice(0, 10);
+      link.download = `Para-Amorchiii-${fecha}.png`;
+      link.href = dataUrl;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
 
   } catch (error) {
     alert('No se pudo generar la imagen 😢\n' + error.message);
@@ -560,13 +568,21 @@ document.getElementById('btnDescargarContador').addEventListener('click', async 
     document.body.removeChild(tempDiv);
 
     // Descargamos
-    const link = document.createElement('a');
-    link.download = `Reloj_Amorchiii.png`;
-    link.href = dataUrl;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-
+        const esCelular = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    if (esCelular) {
+      const ventana = window.open();
+      ventana.document.write(`<body style="margin:0; background:#000; display:flex; flex-direction:column; justify-content:center; align-items:center; height:100vh;"><img src="${dataUrl}" style="max-width:100%; max-height:90%; object-fit:contain;" /><p style="color:white; font-family:sans-serif; margin-top: 15px;">Mantén presionada la imagen para guardarla 📸</p></body>`);
+      ventana.document.close();
+    } else {
+      const link = document.createElement('a');
+      link.download = `Reloj_Amorchiii.png`;
+      link.href = dataUrl;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+    
   } catch (error) {
     alert('No se pudo generar la imagen 😢');
     console.error(error);
