@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#D8BFE8" />
+  <title>For my honey ❤️</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Orbitron:wght@500;700;900&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- Corazones flotando de fondo -->
+  <div class="hearts-bg" id="heartsBg"></div>
+
+  <!-- PANTALLA 1: BLOQUEO -->
+  <section id="pantallaBloqueo" class="pantalla activa">
+    <div class="carta-bloqueo">
+      <h1 class="titulo-bloqueo">Hola, Amorchiii ❤️</h1>
+      <p class="texto-bloqueo">Antes de entrar, dime algo:<br />¿cuál es nuestra fecha especial?</p>
+      <input type="date" id="inputFecha" class="input-fecha" />
+      <button id="btnEntrar" class="btn-principal">Entrar 💕</button>
+      <p id="mensajeError" class="mensaje-error"></p>
+    </div>
+  </section>
+
+  <!-- PANTALLA 2: CONTADOR + CARTA -->
+  <section id="pantallaCarta" class="pantalla">
+    <div class="contador" id="contador">
+      <div class="contador-item"><span id="anios">0</span><small>Años</small></div>
+      <div class="contador-item"><span id="meses">0</span><small>Meses</small></div>
+      <div class="contador-item"><span id="dias">0</span><small>Días</small></div>
+      <div class="contador-item"><span id="horas">0</span><small>Horas</small></div>
+      <div class="contador-item"><span id="minutos">0</span><small>Min</small></div>
+      <div class="contador-item"><span id="segundos">0</span><small>Seg</small></div>
+    </div>
+    <p class="frase-contador" id="fraseContador">Y cada segundo sigue valiendo la pena…</p>
+
+    <!-- boton para descargar contador -->
+     <button id="btnDescargarContador" class="btn-descargar-contador">📸 Descargar reloj </button>
+    <div class="carta-contenedor">
+      <div class="papel-carta">
+        <p id="textoCarta" class="texto-carta"></p>
+      </div>
+      <button id="btnSiguienteCarta" class="btn-siguiente oculto">Siguiente 💌</button>
+    </div>
+  </section>
+
+  <!-- PANTALLA 3: QUIZ -->
+  <section id="pantallaQuiz" class="pantalla">
+    <div class="quiz-contenedor">
+      <h2 class="titulo-quiz">Quiz del Amor 💘</h2>
+      <p class="progreso-quiz" id="progresoQuiz">Pregunta 1 de 5</p>
+      <div class="pregunta-caja">
+        <p id="preguntaTexto" class="pregunta-texto"></p>
+        <div id="opciones" class="opciones"></div>
+        <p id="feedbackQuiz" class="feedback-quiz"></p>
+      </div>
+      <button id="btnSiguientePregunta" class="btn-siguiente oculto">Siguiente ➡️</button>
+    </div>
+  </section>
+
+  <!-- PANTALLA 4: FINAL -->
+  <section id="pantallaFinal" class="pantalla">
+    <div class="final-contenedor">
+      <h2 class="titulo-final">Gracias por estos 2 años, Amorchiii</h2>
+      <p class="puntaje-final" id="puntajeFinal"></p>
+      <p class="mensaje-final" id="mensajeFinalQuiz"></p>
+
+      <div class="ramo" id="ramo">
+        <div class="ramo-flores" id="ramoFlores"></div>
+        <div class="ramo-tallos" id="ramoTallos"></div>
+        <div class="ramo-amarre">
+            <div class="lazo">
+                <div class="lazo-nudo"></div>
+            </div>
+            <div class="lazo-colgante izq"></div>
+            <div class="lazo-colgante der"></div>
+        </div>
+      </div>
+
+      <p class="cierre">Esto es solo el comienzo. Te amo con el alma, mi vida. 🥹</p>
+      <p class="firma">— Emmanuel "Yoshi" Cabrera, tu biker favorito 🏍️</p>
+
+      <button id="btnInstalar" class="btn-secundario">Guárdame en tu pantalla de inicio 📱</button>
+      <button id="btnVolverInicio" class="btn-secundario">Volver al inicio 🔁</button>
+      <button id="btnDescargar" class="btn-secundario">Descargar como imagen 📸</button>
+    </div>
+  </section>
+
+  <!-- Botón flotante de música (desactivado por ahora) -->
+  <button id="btnMusica" class="btn-musica oculto" title="Música">🔇</button>
+  
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
