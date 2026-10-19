@@ -40,7 +40,6 @@ function generarRamo() {
     { p1: '#FFB6C1', p2: '#F48FB1' }
   ];
 
-  // 3 anillos concéntricos: 1 centro, 8 medios, 15 exteriores
   const capas = [
     { n: 1,  radioY: 0,   radioX: 0,   tamanoBase: 74, delayBase: 1.4 },
     { n: 8,  radioY: 35,  radioX: 55,  tamanoBase: 66, delayBase: 1.1 },
@@ -51,16 +50,12 @@ function generarRamo() {
 
   capas.forEach((capa, ci) => {
     for (let i = 0; i < capa.n; i++) {
-      // Distribuir en elipse (más ancho que alto)
-      const angulo = capa.n === 1
-        ? 0
-        : (360 / capa.n) * i + (ci * 10);
+      const angulo = capa.n === 1 ? 0 : (360 / capa.n) * i + (ci * 10);
       const rad = (angulo - 90) * Math.PI / 180;
 
       const x = Math.cos(rad) * capa.radioX;
       const y = Math.sin(rad) * capa.radioY;
 
-      // Jitter suave para naturalidad
       const jx = (Math.random() - 0.5) * 10;
       const jy = (Math.random() - 0.5) * 6;
       const tamano = capa.tamanoBase + (Math.random() - 0.5) * 8;
@@ -78,7 +73,7 @@ function generarRamo() {
       flor.style.zIndex = 10 + (2 - ci);
       contFlores.appendChild(flor);
 
-        // ----- TALLO -----
+      // ----- TALLO -----
       if (ci > 0) {
         const amarreX = 180;
         const amarreY = 320;
@@ -87,10 +82,7 @@ function generarRamo() {
 
         const dx = florCenterX - amarreX;
         const dy = florCenterY - amarreY;
-
         const distancia = Math.sqrt(dx * dx + dy * dy);
-
-        //anglo hacia arriba
         const anguloTallo = Math.atan2(dx, -dy) * (180 / Math.PI);
 
         const tallo = document.createElement('div');
@@ -115,7 +107,6 @@ function generarRamo() {
       index++;
     }
   });
-
   console.log(`Ramo generado con ${index} flores`);
 }
 
@@ -125,7 +116,7 @@ const btnEntrar = document.getElementById('btnEntrar');
 const mensajeError = document.getElementById('mensajeError');
 
 btnEntrar.addEventListener('click', () => {
-  const valor = inputFecha.value; // formato YYYY-MM-DD
+  const valor = inputFecha.value;
   if (valor === '2024-11-01') {
     mensajeError.textContent = '';
     iniciarContador();
@@ -179,7 +170,6 @@ function calcularDiferencia(desde, hasta) {
     meses--;
   }
   if (meses < 0) { meses += 12; anios--; }
-
   return { anios, meses, dias, horas, minutos, segundos };
 }
 
@@ -194,7 +184,7 @@ function actualizarContador() {
   document.getElementById('segundos').textContent = String(d.segundos).padStart(2,'0');
 }
 
-// ====== PANTALLA 2: CARTA QUE SE ESCRIBE SOLA ======
+// ====== PANTALLA 2: CARTA ======
 const TEXTO_CARTA = `Son 2 años, 24 meses, 730 días y más de 10 mil horas juntos, viviendo momentos felices y dolorosos. Reímos, lloramos, nos mentamos la madre y, en varias ocasiones, amenazamos con terminar esta relación.
 
 Amor, son más de 10 mil horas que he pasado a tu lado y no quiero que terminen. No soy perfecto y tampoco el mejor hombre que pudiste encontrar, pero sí soy un loco desquiciado que está a las 3 a.m. dando vueltas en la cama por ver cómo solucionar cada problema que tuvimos en el día y previniendo los conflictos que vengan.
@@ -208,13 +198,11 @@ function escribirCarta() {
   const el = document.getElementById('textoCarta');
   const btn = document.getElementById('btnSiguienteCarta');
   let i = 0;
-  const velocidad = 40; // ms por letra
-
   function escribir() {
     if (i < TEXTO_CARTA.length) {
       el.textContent += TEXTO_CARTA.charAt(i);
       i++;
-      setTimeout(escribir, velocidad);
+      setTimeout(escribir, 40);
     } else {
       btn.classList.remove('oculto');
     }
@@ -229,40 +217,11 @@ document.getElementById('btnSiguienteCarta').addEventListener('click', () => {
 
 // ====== PANTALLA 3: QUIZ ======
 const PREGUNTAS = [
-  {
-    pregunta: '¿Dónde fue nuestro primer beso?',
-    opciones: ['En el cine', 'En Walmart', 'En una fiesta'],
-    correcta: 1,
-    feedback: '¡Ese día no me lo saco ni de la cabeza! 😏'
-  },
-  {
-    pregunta: '¿Cuál es mi mayor sueño contigo?',
-    opciones: ['Viajar por el mundo', 'Casarnos y tener esa familia que tanto soñamos', 'Comprar una casa'],
-    correcta: 1,
-    feedback: 'Sí, mi amor. Esa familia que tanto soñamos es mi meta contigo 💍'
-  },
-  {
-    pregunta: '¿De qué flores era el primer ramo que te compré?',
-    opciones: ['Rosas rojas', 'Lilis', 'Girasoles'],
-    correcta: 1,
-    feedback: 'Nunca se me va a olvidar ese día 🌷'
-  },
-  {
-    pregunta: '¿Cuáles son las 3 razones por las que sigo a tu lado?',
-    opciones: [
-      'Porque te amo, eres mi lugar seguro y soy feliz a tu lado',
-      'Porque eres bonita y ya',
-      'Por costumbre'
-    ],
-    correcta: 0,
-    feedback: 'Así es. Te amo, eres mi lugar seguro y soy feliz a tu lado ❤️'
-  },
-  {
-    pregunta: '¿Cuál es mi viaje soñado contigo?',
-    opciones: ['Un crucero por el Caribe', 'Un viaje en moto por carretera', 'Un viaje a París'],
-    correcta: 1,
-    feedback: '¡Un viaje en moto por carretera, mi amor! Solos tú y yo, sin nada que nos moleste 🏍️'
-  }
+  { pregunta: '¿Dónde fue nuestro primer beso?', opciones: ['En el cine', 'En Walmart', 'En una fiesta'], correcta: 1, feedback: '¡Ese día no me lo saco ni de la cabeza! 😏' },
+  { pregunta: '¿Cuál es mi mayor sueño contigo?', opciones: ['Viajar por el mundo', 'Casarnos y tener esa familia que tanto soñamos', 'Comprar una casa'], correcta: 1, feedback: 'Sí, mi amor. Esa familia que tanto soñamos es mi meta contigo 💍' },
+  { pregunta: '¿De qué flores era el primer ramo que te compré?', opciones: ['Rosas rojas', 'Lilis', 'Girasoles'], correcta: 1, feedback: 'Nunca se me va a olvidar ese día 🌷' },
+  { pregunta: '¿Cuáles son las 3 razones por las que sigo a tu lado?', opciones: ['Porque te amo, eres mi lugar seguro y soy feliz a tu lado', 'Porque eres bonita y ya', 'Por costumbre'], correcta: 0, feedback: 'Así es. Te amo, eres mi lugar seguro y soy feliz a tu lado ❤️' },
+  { pregunta: '¿Cuál es mi viaje soñado contigo?', opciones: ['Un crucero por el Caribe', 'Un viaje en moto por carretera', 'Un viaje a París'], correcta: 1, feedback: '¡Un viaje en moto por carretera, mi amor! Solos tú y yo, sin nada que nos moleste 🏍️' }
 ];
 
 let indicePregunta = 0;
@@ -324,7 +283,7 @@ function mostrarResultadoFinal() {
   else msg = 'Uy… tendremos que repasar nuestra historia, mi amor. Igual te amo muchísimo.';
   document.getElementById('mensajeFinalQuiz').textContent = msg;
   mostrarPantalla('pantallaFinal');
-  setTimeout(generarRamo, 150); // Generar ramo después de mostrar pantalla final
+  setTimeout(generarRamo, 150);
 }
 
 // ====== VOLVER AL INICIO ======
@@ -337,41 +296,32 @@ document.getElementById('btnVolverInicio').addEventListener('click', () => {
   mostrarPantalla('pantallaBloqueo');
 });
 
-// ====== PWSA: service worker + instalacion ======
-if ('serviceWorker' in nsvigstor){
+// ====== PWA: SERVICE WORKER + INSTALACIÓN ======
+if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('service-worker.js').catch(() => {});
   });
 }
 
 let deferredPrompt = null;
-
-//ESCUCHA SI EL NAVEGADOR PERMITE INSTALACION NATIVA (android/ chrome)
-window.addEventListener('beforeinstallprompt', (e) =>{
+window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   deferredPrompt = e;
 });
 
-// Al darle clic al boton intallar
-document.getElementById('btninstalar').addEventListener('click', async () =>{
-  //1. si es androdi y el navegador acepta instalacio nativa directa
+document.getElementById('btnInstalar').addEventListener('click', async () => {
   if (deferredPrompt) {
     deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.useerChoice;
-    if (outcome === 'acepted') {
-      deferredPrompt = null;
-    }
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') deferredPrompt = null;
     return;
   }
 
-  //2. si no hay instalacion nativa (iphone o navegador cerrados), mostrar modal manual
-  const esIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.TransformStream;
-  
+  const esIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
   const modal = document.createElement('div');
-  modal.className = 'modal istrucciones';
-
+  modal.className = 'modal-instrucciones';
+  
   if (esIOS) {
-    // Instrucciones para iPhone (Safari)
     modal.innerHTML = `
       <div class="modal-contenido">
         <h3>Para guardar en tu iPhone 📱</h3>
@@ -384,8 +334,7 @@ document.getElementById('btninstalar').addEventListener('click', async () =>{
         <button class="btn-cerrar-modal">Entendido ❤️</button>
       </div>
     `;
-  }else{
-    // Instrucciones para Android u otros
+  } else {
     modal.innerHTML = `
       <div class="modal-contenido">
         <h3>Para guardar en tu Android 🤖</h3>
@@ -401,26 +350,18 @@ document.getElementById('btninstalar').addEventListener('click', async () =>{
   }
 
   document.body.appendChild(modal);
-
-  // Animación de entrada
   setTimeout(() => modal.classList.add('activo'), 10);
 
-  // Cerrar modal
-  modal.querySelector('.btn-cerrar-modal').addEventListener('click', () => {
+  const cerrarModal = () => {
     modal.classList.remove('activo');
     setTimeout(() => document.body.removeChild(modal), 300);
-  });
-
-    // También cerrar si toca fuera del cuadro
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) {
-      modal.classList.remove('activo');
-      setTimeout(() => document.body.removeChild(modal), 300);
-    }
-  });
+  };
+  
+  modal.querySelector('.btn-cerrar-modal').addEventListener('click', cerrarModal);
+  modal.addEventListener('click', (e) => { if (e.target === modal) cerrarModal(); });
 });
 
-// ====== FUNCIÓN PARA CARGAR LAS FUENTES ======
+// ====== DESCARGAS (IMAGEN Y RELOJ) ======
 async function getFontEmbedCSS() {
   const url = 'https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Orbitron:wght@500;700;900&family=Poppins:wght@300;400;600&display=swap';
   try {
@@ -432,85 +373,56 @@ async function getFontEmbedCSS() {
   }
 }
 
-// ====== BOTÓN DESCARGAR ======
+function manejarDescarga(dataUrl, nombreArchivo) {
+  const esCelular = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  if (esCelular) {
+    const ventana = window.open();
+    ventana.document.write(`<body style="margin:0; background:#000; display:flex; flex-direction:column; justify-content:center; align-items:center; height:100vh;"><img src="${dataUrl}" style="max-width:100%; max-height:90%; object-fit:contain;" /><p style="color:white; font-family:sans-serif; margin-top: 15px;">Mantén presionada la imagen para guardarla 📸</p></body>`);
+    ventana.document.close();
+  } else {
+    const link = document.createElement('a');
+    link.download = nombreArchivo;
+    link.href = dataUrl;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+}
+
 document.getElementById('btnDescargar').addEventListener('click', async () => {
   const btn = document.getElementById('btnDescargar');
   const textoOriginal = btn.textContent;
-  btn.textContent = 'Generando imagen… ⏳';
+  btn.textContent = 'Generando… ⏳';
   btn.disabled = true;
 
   try {
     const lib = window.htmlToImage || window.htmltoimage;
-    if (!lib) {
-      throw new Error('La librería html-to-image no se cargó.');
-    }
+    if (!lib) throw new Error('Librería no cargada.');
 
-    // Esperar a que las fuentes estén listas
-    if (document.fonts && document.fonts.ready) {
-      await document.fonts.ready;
-    }
-    // Esperar a que las animaciones del ramo terminen
+    if (document.fonts && document.fonts.ready) await document.fonts.ready;
     await new Promise(r => setTimeout(r, 2200));
 
     const contenedor = document.querySelector('.final-contenedor');
-
-    // Guardar estilos originales
     const estilosPrevios = contenedor.style.cssText;
-    
-    // Expandir el contenedor temporalmente para que no se corte el texto
     contenedor.style.height = 'auto';
     contenedor.style.maxHeight = 'none';
     contenedor.style.overflow = 'visible';
-    
-    // Forzar un pequeño reflow para que el navegador aplique los cambios
     void contenedor.offsetHeight;
 
-    // Cargar fuentes embebidas
-    const fontCSS = await getFontEmbedCSS();
-
-    // Capturar la imagen
     const dataUrl = await lib.toPng(contenedor, {
-      backgroundColor: '#FFF8F5',
-      pixelRatio: 2,
-      cacheBust: true,
-      skipFonts: false,
-      fontEmbedCSS: fontCSS,
-      style: {
-        animation: 'none',
-        transform: 'none'
-      }
+      backgroundColor: '#FFF8F5', pixelRatio: 2, cacheBust: true, skipFonts: false, fontEmbedCSS: await getFontEmbedCSS(), style: { animation: 'none', transform: 'none' }
     });
 
-    // Restaurar estilos originales
     contenedor.style.cssText = estilosPrevios;
-
-    // Descargar la imagen
-        const esCelular = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    
-    if (esCelular) {
-      const ventana = window.open();
-      ventana.document.write(`<body style="margin:0; background:#000; display:flex; flex-direction:column; justify-content:center; align-items:center; height:100vh;"><img src="${dataUrl}" style="max-width:100%; max-height:90%; object-fit:contain;" /><p style="color:white; font-family:sans-serif; margin-top: 15px;">Mantén presionada la imagen para guardarla 📸</p></body>`);
-      ventana.document.close();
-    } else {
-      const link = document.createElement('a');
-      const fecha = new Date().toISOString().slice(0, 10);
-      link.download = `Para-Amorchiii-${fecha}.png`;
-      link.href = dataUrl;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
-
+    manejarDescarga(dataUrl, `Para-Amorchiii-${new Date().toISOString().slice(0,10)}.png`);
   } catch (error) {
     alert('No se pudo generar la imagen 😢\n' + error.message);
-    console.error('Error al generar imagen:', error);
   } finally {
     btn.textContent = textoOriginal;
     btn.disabled = false;
   }
 });
 
-// ====== DESCARGAR EL CONTADOR COMO IMAGEN ======
 document.getElementById('btnDescargarContador').addEventListener('click', async () => {
   const btn = document.getElementById('btnDescargarContador');
   const textoOriginal = btn.textContent;
@@ -520,33 +432,15 @@ document.getElementById('btnDescargarContador').addEventListener('click', async 
   try {
     const lib = window.htmlToImage || window.htmltoimage;
     if (!lib) throw new Error('Librería no cargada.');
+    if (document.fonts && document.fonts.ready) await document.fonts.ready;
 
-    // Esperar fuentes
-    if (document.fonts && document.fonts.ready) {
-      await document.fonts.ready;
-    }
-
-    // Vamos a agrupar el contador y la frase para que salgan en la misma foto
     const contador = document.querySelector('.contador');
     const frase = document.getElementById('fraseContador');
-    
-    // Creamos un contenedor temporal invisible para la foto
     const tempDiv = document.createElement('div');
-    tempDiv.style.position = 'absolute';
-    tempDiv.style.left = '-9999px';
-    tempDiv.style.background = 'linear-gradient(135deg, #F8C8DC, #D8BFE8, #A9CCE3)'; // El fondo pastel
-    tempDiv.style.padding = '40px 20px';
-    tempDiv.style.borderRadius = '20px';
-    tempDiv.style.display = 'flex';
-    tempDiv.style.flexDirection = 'column';
-    tempDiv.style.alignItems = 'center';
-    tempDiv.style.width = '760px'; // Ancho fijo para que no se corte
-
-    // Clonamos los elementos para no afectar la pantalla real
+    tempDiv.style.cssText = 'position:absolute; left:-9999px; background:linear-gradient(135deg, #F8C8DC, #D8BFE8, #A9CCE3); padding:40px 20px; border-radius:20px; display:flex; flex-direction:column; align-items:center; width:760px;';
+    
     const contadorClone = contador.cloneNode(true);
     const fraseClone = frase.cloneNode(true);
-    
-    // Quitamos los brillos extra que a veces dan problemas en la captura
     contadorClone.style.boxShadow = 'none';
     contadorClone.style.margin = '0 0 15px 0';
     fraseClone.style.margin = '0';
@@ -555,37 +449,14 @@ document.getElementById('btnDescargarContador').addEventListener('click', async 
     tempDiv.appendChild(fraseClone);
     document.body.appendChild(tempDiv);
 
-    // Capturamos
     const dataUrl = await lib.toPng(tempDiv, {
-      backgroundColor: null,
-      pixelRatio: 2,
-      cacheBust: true,
-      skipFonts: false,
-      fontEmbedCSS: await getFontEmbedCSS()
+      backgroundColor: null, pixelRatio: 2, cacheBust: true, skipFonts: false, fontEmbedCSS: await getFontEmbedCSS()
     });
 
-    // Borramos el contenedor temporal
     document.body.removeChild(tempDiv);
-
-    // Descargamos
-        const esCelular = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    
-    if (esCelular) {
-      const ventana = window.open();
-      ventana.document.write(`<body style="margin:0; background:#000; display:flex; flex-direction:column; justify-content:center; align-items:center; height:100vh;"><img src="${dataUrl}" style="max-width:100%; max-height:90%; object-fit:contain;" /><p style="color:white; font-family:sans-serif; margin-top: 15px;">Mantén presionada la imagen para guardarla 📸</p></body>`);
-      ventana.document.close();
-    } else {
-      const link = document.createElement('a');
-      link.download = `Reloj_Amorchiii.png`;
-      link.href = dataUrl;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
-    
+    manejarDescarga(dataUrl, `Reloj_Amorchiii.png`);
   } catch (error) {
     alert('No se pudo generar la imagen 😢');
-    console.error(error);
   } finally {
     btn.textContent = textoOriginal;
     btn.disabled = false;
