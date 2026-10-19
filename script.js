@@ -373,12 +373,18 @@ async function getFontEmbedCSS() {
   }
 }
 
-function manejarDescarga(dataUrl, nombreArchivo) {
+function manejarDescarga(dataUrl, nombreArchivo, ventanaAbierta) {
   const esCelular = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  
   if (esCelular) {
-    const ventana = window.open();
-    ventana.document.write(`<body style="margin:0; background:#000; display:flex; flex-direction:column; justify-content:center; align-items:center; height:100vh;"><img src="${dataUrl}" style="max-width:100%; max-height:90%; object-fit:contain;" /><p style="color:white; font-family:sans-serif; margin-top: 15px;">Mantén presionada la imagen para guardarla 📸</p></body>`);
-    ventana.document.close();
+    // Si la ventana ya se abrió al inicio, la usamos. Si no, intentamos abrirla.
+    const ventana = ventanaAbierta || window.open();
+    if (ventana) {
+      ventana.document.write(`<body style="margin:0; background:#000; display:flex; flex-direction:column; justify-content:center; align-items:center; height:100vh;"><img src="${dataUrl}" style="max-width:100%; max-height:90%; object-fit:contain;" /><p style="color:white; font-family:sans-serif; margin-top: 15px; text-align:center; padding: 0 20px;">Mantén presionada la imagen para guardarla 📸</p></body>`);
+      ventana.document.close();
+    } else {
+      alert("Tu navegador bloqueó la ventana. Por favor, permite las ventanas emergentes para este sitio.");
+    }
   } else {
     const link = document.createElement('a');
     link.download = nombreArchivo;
@@ -395,6 +401,16 @@ document.getElementById('btnDescargar').addEventListener('click', async () => {
   btn.textContent = 'Generando… ⏳';
   btn.disabled = true;
 
+  // TRUCO: Abrimos la ventana AQUÍ para que Safari no la bloquee
+  const esCelular = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  let ventanaEmergente = null;
+  if (esCelular) {
+    ventanaEmergente = window.open();
+    if (ventanaEmergente) {
+      ventanaEmergente.document.write('<p style="color:white; background:black; height:100vh; display:flex; justify-content:center; align-items:center; font-family:sans-serif;">Generando tu imagen... espera un momento ⏳</p>');
+    }
+  }
+  
   try {
     const lib = window.htmlToImage || window.htmltoimage;
     if (!lib) throw new Error('Librería no cargada.');
@@ -414,8 +430,10 @@ document.getElementById('btnDescargar').addEventListener('click', async () => {
     });
 
     contenedor.style.cssText = estilosPrevios;
-    manejarDescarga(dataUrl, `Para-Amorchiii-${new Date().toISOString().slice(0,10)}.png`);
+    manejarDescarga(dataUrl, `Para-Amorchiii-${new Date().toISOString().slice(0,10)}.png`, ventanaEmergente);
+    
   } catch (error) {
+    if (ventanaEmergente) ventanaEmergente.close(); //si falla, cerramos la ventana
     alert('No se pudo generar la imagen 😢\n' + error.message);
   } finally {
     btn.textContent = textoOriginal;
@@ -423,11 +441,21 @@ document.getElementById('btnDescargar').addEventListener('click', async () => {
   }
 });
 
-document.getElementById('btnDescargarContador').addEventListener('click', async () => {
-  const btn = document.getElementById('btnDescargarContador');
+document.getElementById('btnDescargar').addEventListener('click', async () => {
+  const btn = document.getElementById('btnDescargar');
   const textoOriginal = btn.textContent;
   btn.textContent = 'Generando… ⏳';
   btn.disabled = true;
+
+  // TRUCO: Abrimos la ventana AQUÍ para que Safari no la bloquee
+  const esCelular = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  let manejarDescarga = null;
+  if (esCelular) {
+    manejarDescarga = window.open();
+    if (manejarDescarga) {
+      manejarDescarga.document.write('<p style="color:white; background:black; height:100vh; display:flex; justify-content:center; align-items:center; font-family:sans-serif;">Generando tu imagen... espera un momento ⏳</p>');
+    }
+  }
 
   try {
     const lib = window.htmlToImage || window.htmltoimage;
@@ -454,8 +482,10 @@ document.getElementById('btnDescargarContador').addEventListener('click', async 
     });
 
     document.body.removeChild(tempDiv);
-    manejarDescarga(dataUrl, `Reloj_Amorchiii.png`);
+    manejarDescarga(dataUrl, `Reloj_Amorchiii.png`, manejarDescarga);
+    
   } catch (error) {
+    if (manjearDescarga) manejarDescarga.close();
     alert('No se pudo generar la imagen 😢');
   } finally {
     btn.textContent = textoOriginal;
