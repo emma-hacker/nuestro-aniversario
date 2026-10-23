@@ -360,3 +360,80 @@ document.getElementById('btnInstalar').addEventListener('click', async () => {
   modal.querySelector('.btn-cerrar-modal').addEventListener('click', cerrarModal);
   modal.addEventListener('click', (e) => { if (e.target === modal) cerrarModal(); });
 });
+
+// ====== DESCARGAR LA PANTALLA FINAL COMO IMAGEN ======
+async function getFontEmbedCSS() {
+  const url = 'https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Orbitron:wght@500;700;900&family=Poppins:wght@300;400;600&display=swap';
+  try {
+    const response = await fetch(url);
+    return await response.text();
+  } catch (e) {
+    return '';
+  }
+}
+
+document.getElementById('btnDescargar').addEventListener('click', async () => {
+  const btn = document.getElementById('btnDescargar');
+  const textoOriginal = btn.textContent;
+  btn.textContent = 'Generando… ⏳';
+  btn.disabled = true;
+
+  // Abrir ventana en blanco rápido para que Safari no la bloquee
+  const esCelular = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  let ventanaEmergente = null;
+  if (esCelular) {
+    ventanaEmergente = window.open();
+    if (ventanaEmergente) {
+      ventanaEmergente.document.write('<body style="background:#000; color:white; display:flex; justify-content:center; align-items:center; height:100vh; font-family:sans-serif;"><h2>Generando imagen... ⏳</h2></body>');
+    }
+  }
+
+  try {
+    const lib = window.htmlToImage || window.htmltoimage;
+    if (!lib) throw new Error('Librería no cargada.');
+
+    if (document.fonts && document.fonts.ready) await document.fonts.ready;
+    await new Promise(r => setTimeout(r, 2200));
+
+    const contenedor = document.querySelector('.final-contenedor');
+    
+    // Ocultar botones antes de la foto
+    const botonesOcultos = contenedor.querySelectorAll('button');
+    botonesOcultos.forEach(b => b.style.display = 'none');
+
+    const estilosPrevios = contenedor.style.cssText;
+    contenedor.style.height = 'auto';
+    contenedor.style.maxHeight = 'none';
+    contenedor.style.overflow = 'visible';
+    void contenedor.offsetHeight;
+
+    const dataUrl = await lib.toPng(contenedor, {
+      backgroundColor: '#FFF8F5', pixelRatio: 2, cacheBust: true, skipFonts: false, fontEmbedCSS: await getFontEmbedCSS(), style: { animation: 'none', transform: 'none' }
+    });
+
+    // Restaurar estilos y botones
+    contenedor.style.cssText = estilosPrevios;
+    botonesOcultos.forEach(b => b.style.display = '');
+
+    // Descargar/Mostrar
+    if (esCelular && ventanaEmergente) {
+      ventanaEmergente.document.write(`<body style="margin:0; background:#000; display:flex; flex-direction:column; justify-content:center; align-items:center; height:100vh;"><img src="${dataUrl}" style="max-width:100%; max-height:90%; object-fit:contain;" /><p style="color:white; font-family:sans-serif; margin-top: 15px; text-align:center; padding: 0 20px;">Mantén presionada la imagen para guardarla 📸</p></body>`);
+      ventanaEmergente.document.close();
+    } else {
+      const link = document.createElement('a');
+      const fecha = new Date().toISOString().slice(0,10);
+      link.download = `Para-Amorchiii-${fecha}.png`;
+      link.href = dataUrl;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+  } catch (error) {
+    if (ventanaEmergente) ventanaEmergente.close();
+    alert('No se pudo generar la imagen 😢\n' + error.message);
+  } finally {
+    btn.textContent = textoOriginal;
+    btn.disabled = false;
+  }
+});
