@@ -139,6 +139,7 @@ function iniciarContador() {
     '10 mil horas y contando, Amorchiii ❤️',
     'Mi lugar seguro eres tú.',
     'Cada día a tu lado es mi favorito.',
+    'Una historia que apenas se escribe',
     'Y esto apenas comienza…'
   ];
   let idx = 0;
@@ -189,6 +190,8 @@ const TEXTO_CARTA = `Son 2 años, 24 meses, 730 días y más de 10 mil horas jun
 
 Amor, son más de 10 mil horas que he pasado a tu lado y no quiero que terminen. No soy perfecto y tampoco el mejor hombre que pudiste encontrar, pero sí soy un loco desquiciado que está a las 3 a.m. dando vueltas en la cama por ver cómo solucionar cada problema que tuvimos en el día y previniendo los conflictos que vengan.
 
+Han sido dias dificiles, llenos de alegria, enojo, frustracion y anhelos, pero, siempe han sido nuestros dias, juntos contra el mundo y contra todo.
+
 Te amo con el alma, mi vida 🥹`;
 
 let cartaEscrita = false;
@@ -202,7 +205,7 @@ function escribirCarta() {
     if (i < TEXTO_CARTA.length) {
       el.textContent += TEXTO_CARTA.charAt(i);
       i++;
-      setTimeout(escribir, 40);
+      setTimeout(escribir, 20);
     } else {
       btn.classList.remove('oculto');
     }
@@ -278,8 +281,8 @@ document.getElementById('btnSiguientePregunta').addEventListener('click', () => 
 function mostrarResultadoFinal() {
   document.getElementById('puntajeFinal').textContent = `${aciertos} / ${PREGUNTAS.length}`;
   let msg = '';
-  if (aciertos === 5) msg = 'Eres oficialmente la persona que más me conoce. Te amo, Amorchiii.';
-  else if (aciertos >= 3) msg = 'Casi perfecto, Amorchiii. Pero igual te amo aunque falles 😏';
+  if (aciertos === 5) msg = 'Recuerdos y metas que aun quiero tener y conservar contigo. Te amo mi niña.';
+  else if (aciertos >= 3) msg = 'Casi perfecto, My love. Pero igual te amo aunque falles 😏';
   else msg = 'Uy… tendremos que repasar nuestra historia, mi amor. Igual te amo muchísimo.';
   document.getElementById('mensajeFinalQuiz').textContent = msg;
   mostrarPantalla('pantallaFinal');
